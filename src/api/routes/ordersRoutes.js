@@ -1,8 +1,16 @@
 const express = require("express");
 const router = express.Router();
 
+const { orderLog } = require("../../utils/logEvents");
+const EventEmitter = require("node:events");
+const myEmitter = new EventEmitter();
+
 const Order = require("../models/order");
 const Product = require("../models/product");
+
+myEmitter.on("orderLog", (orderId) => {
+    orderLog(orderId);
+});
 
 //Get all orders
 router.get("/", async (req, res, next) => {
@@ -64,6 +72,7 @@ router.post("/", async (req, res, next) => {
                 url: `${process.env.BASE_URL}/orders/${order._id}`,
             },
         });
+        myEmitter.emit("orderLog", order._id);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

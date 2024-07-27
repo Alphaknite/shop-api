@@ -3,6 +3,10 @@ const router = express.Router();
 const Product = require("../models/product");
 const multer = require("multer");
 
+const { productLog } = require("../../utils/logEvents");
+const EventEmitter = require("node:events");
+const myEmitter = new EventEmitter();
+
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, "./uploads/");
@@ -10,6 +14,10 @@ const storage = multer.diskStorage({
     filename: function (req, file, cb) {
         cb(null, file.originalname);
     },
+});
+
+myEmitter.on("productLog", (productName, productId) => {
+    productLog(productName, productId);
 });
 
 const fileFilter = (req, file, cb) => {
@@ -56,17 +64,16 @@ router.get("/", async (req, res, next) => {
 });
 
 //Create a new product
-router.post("/", upload.single('productImage'), async (req, res, next) => {
+router.post("/", upload.single("productImage"), async (req, res, next) => {
     try {
         const product = new Product({
             name: req.body.name,
             price: req.body.price,
             stock: req.body.stock,
-            productImage: req.file.path 
+            productImage: req.file.path,
         });
 
         const savedProduct = await product.save();
-
         res.status(201).json({
             message: "Product created!",
             createdProduct: {
@@ -81,6 +88,7 @@ router.post("/", upload.single('productImage'), async (req, res, next) => {
                 },
             },
         });
+        myEmitter.emit("productLog", savedProduct.name, savedProduct._id);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -156,7 +164,12 @@ router.delete("/:id", async (req, res, next) => {
                 request: {
                     type: "POST",
                     url: `${process.env.BASE_URL}/products`,
-                    body: { name: "String", price: "Number", stock: "Number", productImage: "File"},
+                    body: {
+                        name: "String",
+                        price: "Number",
+                        stock: "Number",
+                        productImage: "File",
+                    },
                 },
             },
         });
