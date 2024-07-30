@@ -122,15 +122,27 @@ router.get("/:id", async (req, res, next) => {
 });
 
 //Update a product by id
-router.put("/:id", async (req, res, next) => {
+router.put("/:id", upload.single("productImage"), async (req, res, next) => {
     try {
         const id = req.params.id;
-        const updatedProduct = await Product.findByIdAndUpdate(id, req.body, {
+        const updateData = req.body;
+        if (req.file) {
+            updateData.productImage = req.file.path;
+        }
+
+        if (!id) {
+            return res.status(400).json({ message: "Invalid ID" });
+        }
+
+        const updatedProduct = await Product.findByIdAndUpdate(id, updateData, {
             new: true,
+            runValidators: true,
         });
+
         if (updatedProduct) {
             res.status(200).json({
                 message: "Product Updated",
+                product: updatedProduct,
                 request: {
                     type: "GET",
                     url: `${process.env.BASE_URL}/products/${id}`,

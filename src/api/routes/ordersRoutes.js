@@ -29,7 +29,7 @@ router.get("/", async (req, res, next) => {
                         productImage: order.product.productImage,
                     },
                     quantity: order.quantity,
-                    requests: {
+                    request: {
                         type: "GET",
                         description: "Get all orders",
                         url: `${process.env.BASE_URL}/orders/${order._id}`,

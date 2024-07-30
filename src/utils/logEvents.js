@@ -38,7 +38,27 @@ const orderLog = async (orderId) => {
         console.error(error);
     }
 };
+
+const newUserLog = async (email) => {
+    const message = "signed up";
+    const log = `${date}\t${email}\t${message}`;
+
+    try {
+        const logsDir = path.resolve(__dirname, "../logs");
+        if (!fs.existsSync(logsDir)) {
+            await fsPromises.mkdir(logsDir);
+        }
+        await fsPromises.appendFile(
+            path.join(__dirname, "../logs", "Users.txt"),
+            log
+        );
+    } catch (error) {
+        console.error(error);
+    }
+};
+
 module.exports = {
     productLog,
     orderLog,
+    newUserLog,
 };

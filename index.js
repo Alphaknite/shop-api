@@ -5,9 +5,9 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const connectMongo = require("./src/config/db");
 
-
 const productRoutes = require("./src/api/routes/productsRoutes");
 const orderRoutes = require("./src/api/routes/ordersRoutes");
+const userRoutes = require("./src/api/routes/usersRoutes");
 
 app.use(morgan("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -31,6 +31,7 @@ app.use((req, res, next) => {
 
 app.use("/products", productRoutes);
 app.use("/orders", orderRoutes);
+app.use("/user", userRoutes);
 
 app.use((req, res, next) => {
     const error = new Error("Not found");
