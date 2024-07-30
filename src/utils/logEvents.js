@@ -6,7 +6,7 @@ const { format } = require("date-fns");
 const date = `${format(new Date(), "MMM-dd-yyyy\tHH:mm:ss")}`;
 
 const productLog = async (productName, productId) => {
-    const log = `${date}\t${productName}\t${productId}\n`;
+    const log = `${date}\t${productName}\t\t${productId}\n`;
 
     try {
         const logsDir = path.resolve(__dirname, "../logs");
@@ -41,7 +41,7 @@ const orderLog = async (orderId) => {
 
 const newUserLog = async (email) => {
     const message = "signed up";
-    const log = `${date}\t${email}\t${message}`;
+    const log = `${date}\t${email}\t${message}\n`;
 
     try {
         const logsDir = path.resolve(__dirname, "../logs");
