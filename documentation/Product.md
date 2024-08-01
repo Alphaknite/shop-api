@@ -247,9 +247,9 @@
         ```
 
 
-#### Example Responses
+### Example Responses
 
-##### Get All Products:
+#### Get All Products:
 
 ``` json
 {
