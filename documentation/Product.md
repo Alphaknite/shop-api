@@ -4,7 +4,7 @@
 
 **IMPORTANT:**
 
-- An authorization token is required for accessing `POST`, `PUT`, and `DELETE` methods for this endpoint. Refer to `User` endpoint for accessing protected routes.
+- An authorization token is required for accessing `POST`, `PUT`, and `DELETE` methods for this endpoint. Refer to `User` endpoint for accessing protected routes through a JWT token.
 - `POST` and `PUT` methods use form-data.
 - You may use `raw body data(JSON)` if not changing the image for `PUT` mehtod.
     
