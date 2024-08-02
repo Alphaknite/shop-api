@@ -19,6 +19,7 @@ module.exports = {
                         name: product.name,
                         price: product.price,
                         stock: product.stock,
+                        category: product.category,
                         productImage: product.productImage,
                         request: {
                             type: "GET",
@@ -42,6 +43,7 @@ module.exports = {
                 name: product.name,
                 price: product.price,
                 stock: product.stock,
+                category: product.category,
                 productImage: product.productImage,
                 request: {
                     type: "GET",
@@ -64,6 +66,7 @@ module.exports = {
                 name: req.body.name,
                 price: req.body.price,
                 stock: req.body.stock,
+                category: req.body.category,
                 productImage: req.file.path,
             });
     
@@ -75,6 +78,7 @@ module.exports = {
                     name: savedProduct.name,
                     price: savedProduct.price,
                     stock: savedProduct.stock,
+                    category: product.category,
                     productImage: savedProduct.productImage,
                     request: {
                         type: "GET",
@@ -135,8 +139,6 @@ module.exports = {
                     _id: deletedProduct._id,
                     name: deletedProduct.name,
                     price: deletedProduct.price,
-                    stock: deletedProduct.stock,
-                    productImage: deletedProduct.productImage,
                     request: {
                         type: "POST",
                         url: `${process.env.BASE_URL}/products`,
