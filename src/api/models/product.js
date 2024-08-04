@@ -9,6 +9,10 @@ const productSchema = mongoose.Schema({
         type: Number,
         required: true,
     },
+    description: {
+        type: String,
+        required: true,
+    },
     stock: {
         type: Number,
         required: true,
@@ -16,6 +20,12 @@ const productSchema = mongoose.Schema({
     category: {
         type: String,
         required: true,
+    },
+    onSale: {
+        type: Boolean,
+    },
+    bestSeller: {
+        type: Boolean,
     },
     productImage: {
         type: String,
