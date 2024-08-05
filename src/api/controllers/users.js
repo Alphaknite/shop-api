@@ -24,6 +24,7 @@ module.exports = {
                     const user = await User.create({
                         email: req.body.email,
                         password: hash,
+                        role: req.body.role || 'user',
                     });
                     res.status(201).json({ message: "User Created!" });
                     myEmitter.emit("userLog", user.email);

@@ -18,8 +18,11 @@ module.exports = {
                         _id: product._id,
                         name: product.name,
                         price: product.price,
+                        description: product.description,
                         stock: product.stock,
                         category: product.category,
+                        onSale: product.onSale,
+                        bestSeller: product.bestSeller,
                         productImage: product.productImage,
                         request: {
                             type: "GET",
@@ -42,8 +45,11 @@ module.exports = {
                 _id: product._id,
                 name: product.name,
                 price: product.price,
+                description: product.description,
                 stock: product.stock,
                 category: product.category,
+                onSale: product.onSale,
+                bestSeller: product.bestSeller,
                 productImage: product.productImage,
                 request: {
                     type: "GET",
@@ -65,11 +71,14 @@ module.exports = {
             const product = new Product({
                 name: req.body.name,
                 price: req.body.price,
+                description: req.body.description,
                 stock: req.body.stock,
                 category: req.body.category,
+                onSale: req.body.onSale,
+                bestSeller: req.body.bestSeller,
                 productImage: req.file.path,
             });
-    
+
             const savedProduct = await product.save();
             res.status(201).json({
                 message: "Product created!",
@@ -77,8 +86,11 @@ module.exports = {
                     _id: savedProduct._id,
                     name: savedProduct.name,
                     price: savedProduct.price,
+                    description: savedProduct.description,
                     stock: savedProduct.stock,
                     category: product.category,
+                    onSale: savedProduct.onSale,
+                    bestSeller: savedProduct.bestSeller,
                     productImage: savedProduct.productImage,
                     request: {
                         type: "GET",
@@ -98,16 +110,20 @@ module.exports = {
             if (req.file) {
                 updateData.productImage = req.file.path;
             }
-    
+
             if (!id) {
                 return res.status(400).json({ message: "Invalid ID" });
             }
-    
-            const updatedProduct = await Product.findByIdAndUpdate(id, updateData, {
-                new: true,
-                runValidators: true,
-            });
-    
+
+            const updatedProduct = await Product.findByIdAndUpdate(
+                id,
+                updateData,
+                {
+                    new: true,
+                    runValidators: true,
+                }
+            );
+
             if (updatedProduct) {
                 res.status(200).json({
                     message: "Product Updated",
@@ -128,11 +144,11 @@ module.exports = {
         try {
             const id = req.params.id;
             const deletedProduct = await Product.findByIdAndDelete(id);
-    
+
             if (!deletedProduct) {
                 return res.status(404).json({ message: "Product not found" });
             }
-    
+
             res.status(200).json({
                 message: "Product deleted",
                 deletedProduct: {
@@ -155,4 +171,4 @@ module.exports = {
             res.status(500).json({ message: error.message });
         }
     },
-}
+};
