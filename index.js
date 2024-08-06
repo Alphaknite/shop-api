@@ -4,21 +4,27 @@ const app = express();
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const connectMongo = require("./src/config/db");
-
+const cookieParser = require("cookie-parser");
 const productRoutes = require("./src/api/routes/productsRoutes");
 const orderRoutes = require("./src/api/routes/ordersRoutes");
 const userRoutes = require("./src/api/routes/usersRoutes");
 
 app.use(morgan("dev"));
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({extended: false}))
+app.use(cookieParser());
+
+
 app.use("/uploads", express.static("uploads"));
+
 app.use((req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Origin", "http://localhost:3000"); 
     res.header(
         "Access-Control-Allow-Headers",
         "Origin, X-Requested-With, Content-Type, Accept, Authorization"
     );
+    res.header("Access-Control-Allow-Credentials", "true");
+
     if (req.method === "OPTIONS") {
         res.header(
             "Access-Control-Allow-Methods",
