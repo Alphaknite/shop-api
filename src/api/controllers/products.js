@@ -27,7 +27,7 @@ module.exports = {
                         request: {
                             type: "GET",
                             description: "Get all products",
-                            url: `${process.env.BASE_URL}/products/${product._id}`,
+                            url: `${process.env.BASE_URL}/api/v1/products/${product._id}`,
                         },
                     };
                 }),
@@ -54,7 +54,7 @@ module.exports = {
                 request: {
                     type: "GET",
                     description: "Get a single product by ID",
-                    url: `${process.env.BASE_URL}/products/${product._id}`,
+                    url: `${process.env.BASE_URL}/api/v1/products/${product._id}`,
                 },
             };
             if (response) {
@@ -167,6 +167,36 @@ module.exports = {
                     },
                 },
             });
+        } catch (error) {
+            res.status(500).json({ message: error.message });
+        }
+    },
+    getProductByCategory: async (req, res, next) => {
+        try {
+            const { category } = req.params;
+            const products = await Product.find({ category: category });
+            const response = {
+                count: products.length,
+                products: products.map((product) => {
+                    return {
+                        _id: product._id,
+                        name: product.name,
+                        price: product.price,
+                        description: product.description,
+                        stock: product.stock,
+                        category: product.category,
+                        onSale: product.onSale,
+                        bestSeller: product.bestSeller,
+                        productImage: product.productImage,
+                        request: {
+                            type: "GET",
+                            description: "Get all products",
+                            url: `${process.env.BASE_URL}/api/v1/products/${product._id}`,
+                        },
+                    };
+                }),
+            };
+            res.status(200).json(response);
         } catch (error) {
             res.status(500).json({ message: error.message });
         }

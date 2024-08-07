@@ -33,8 +33,9 @@ const upload = multer({
 
 router.get("/", productsController.getAllProducts); //get all products
 router.get("/:id", productsController.getSingleProduct); //get single product by id
-router.post("/", checkAuth, checkAdmin, upload.single("productImage"), productsController.createProduct); //create product
+router.post("/", upload.single("productImage"), productsController.createProduct); //create product
 router.put("/:id", checkAuth, checkAdmin, upload.single("productImage"), productsController.updateProduct); //update a product by id
 router.delete("/:id", checkAuth, checkAdmin, productsController.deleteProduct); //delete product by id
+router.get("/category/:category", productsController.getProductByCategory); // get products by category
 
 module.exports = router;
